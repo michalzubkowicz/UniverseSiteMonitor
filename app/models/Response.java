@@ -1,10 +1,12 @@
 package models;
 
+import com.mongodb.BasicDBObject;
 import org.mongojack.JacksonDBCollection;
 import play.Logger;
 import play.modules.mongojack.MongoDB;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class Response extends AbstractModel implements AbstractModelInterface {
@@ -22,7 +24,7 @@ public class Response extends AbstractModel implements AbstractModelInterface {
     }
 
 
-    private Date created;
+    private Date created=new Date();
 
     public Date getCreated() {
         return created;
@@ -69,5 +71,8 @@ public class Response extends AbstractModel implements AbstractModelInterface {
         Logger.error("Remove called. Should not happend");
     }
 
+    public static List<Response> getPaginatedResponses(int skip) {
+        return Response.collection.find().skip(skip).limit(10).sort(new BasicDBObject("created DESC", -1)).toArray();
+    }
 
 }

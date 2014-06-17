@@ -16,6 +16,7 @@ import java.util.List;
 public class Check {
 
     public static void now() throws Exception{
+        Logger.debug("Running checks");
         final List<Service> services = Service.getActiveServices();
 
         //TODO: Add threading
@@ -41,24 +42,29 @@ public class Check {
 
                                 if (response.getStatus() != 200 || !expectedFound) {
                                     service.setOk(false);
-                                    service.setNotified(true);
+                                    if(!service.getNotified()) {
+                                        service.setNotified(true);
 
-                                    try {
-                                        Email email = new SimpleEmail();
-                                        email.setHostName(play.Play.application().configuration().getString("email.host"));
-                                        email.setSmtpPort(play.Play.application().configuration().getInt("email.port"));
-                                        email.setAuthenticator(new DefaultAuthenticator(play.Play.application().configuration().getString("email.login"), play.Play.application().configuration().getString("email.pass")));
-                                        if (play.Play.application().configuration().getInt("email.port") != 25)
-                                            email.setSSLOnConnect(true);
-                                        email.setFrom(play.Play.application().configuration().getString("email.from"));
-                                        email.setSubject("Our website " + service.getName() + " is down!");
-                                        email.setMsg("Please visit Universe Site Monitor for more details");
-                                        email.addTo(play.Play.application().configuration().getString("email.to"));
-                                        email.send();
-                                    } catch(Exception me) {
-                                        Logger.error("Error when sending notification email "+me.getMessage(),me);
+                                        try {
+                                            Email email = new SimpleEmail();
+                                            email.setHostName(play.Play.application().configuration().getString("email.host"));
+                                            email.setSmtpPort(play.Play.application().configuration().getInt("email.port"));
+                                            email.setAuthenticator(new DefaultAuthenticator(play.Play.application().configuration().getString("email.login"), play.Play.application().configuration().getString("email.pass")));
+                                            if (play.Play.application().configuration().getInt("email.port") != 25)
+                                                email.setSSLOnConnect(true);
+                                            email.setFrom(play.Play.application().configuration().getString("email.from"));
+                                            if (response.getStatus() != 200) {
+                                                email.setSubject("Website " + service.getName() + " is unavailable!");
+                                            } else {
+                                                email.setSubject("Website " + service.getName() + " has wrong content!");
+                                            }
+                                            email.setMsg("Please visit Universe Site Monitor for more details");
+                                            email.addTo(play.Play.application().configuration().getString("email.to"));
+                                            email.send();
+                                        } catch (Exception me) {
+                                            Logger.error("Error when sending notification email " + me.getMessage(), me);
+                                        }
                                     }
-
                                     Logger.debug("NOTOK: " + response.getStatus() + " " + expectedFound);
                                 } else {
                                     service.setOk(true);
@@ -75,6 +81,7 @@ public class Check {
                                 r.setService(service);
                                 r.setResponse(response.getBody());
                                 r.setResponsecode(String.valueOf(response.getStatus()));
+                                r.save();
                             } catch(Exception wse) {
                                 Logger.error("Error when parsing response from "+service.getName()+": "+wse.getMessage(),wse);
                             }

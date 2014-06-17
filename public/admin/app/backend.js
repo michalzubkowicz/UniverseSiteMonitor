@@ -6,9 +6,9 @@ define(function(require){
                 type: 'GET'
             });
         },
-        getResponses:function(){
+        getResponses:function(skip){
             return $.ajax({
-                url: '/admin/response/',
+                url: '/admin/response/'+skip,
                 type: 'GET'
             });
         },

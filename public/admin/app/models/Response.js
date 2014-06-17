@@ -1,4 +1,4 @@
-define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,router) {
+define(['AbstractModel','knockout','durandal/app'], function(AbstractModel,ko,app) {
     return function (id) {
         var self=this;
         AbstractModel.apply(self,[id]);
@@ -14,8 +14,12 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
         });
 
         self.createdFormatted =ko.computed(function() {
-           return self.created();
+           return new Date(self.created());
         });
+
+        self.viewResponse = function() {
+            app.showMessage("<textarea style=\"width:600px; height:300px;\">"+self.response()+"</textarea>");
+        }
 
     }
 });

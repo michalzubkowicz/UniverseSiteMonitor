@@ -12,7 +12,7 @@
                 //{ route: 'labels', title:'Labels / Translations', moduleId: 'viewmodels/labelList', nav: true },
                 { route: 'labels/:id',         moduleId: 'viewmodels/labelEdit'},
                 { route: 'service/:id',         moduleId: 'viewmodels/serviceEdit'},
-                { route: 'responses/:id', title:'Responses', moduleId: 'viewmodels/responseList', nav: true }
+                { route: 'responses', title:'Responses', moduleId: 'viewmodels/responseList', nav: true }
             ]).buildNavigationModel();
             $('.dropdown-toggle').dropdown();
 

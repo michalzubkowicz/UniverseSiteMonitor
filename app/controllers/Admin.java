@@ -3,6 +3,7 @@ package controllers;
 
 import com.mongodb.BasicDBObject;
 import models.Label;
+import models.Response;
 import models.Service;
 import models.User;
 import play.Logger;
@@ -60,9 +61,8 @@ public class Admin extends Controller {
         }
     }
 
-    public static Result indexResponse() {
-        List<Service> o = Service.collection.find().sort(new BasicDBObject("created DESC",-1)).toArray();
-        return ok(Json.toJson(o));
+    public static Result indexResponse(int skip) {
+        return ok(Json.toJson(Response.getPaginatedResponses(skip)));
     }
 
     public static Result indexService() {

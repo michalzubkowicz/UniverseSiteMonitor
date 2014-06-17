@@ -7,6 +7,10 @@
                         <div class="widget">
                             <div class="widget-head">
                                 <div class="pull-left">Responses</div>
+                                <div class="pull-right">
+                                    <button class="btn btn-primary btn-xs" data-bind="click: prevPage,css: {disabled: noPrev}">Previous page</button>
+                                    <button class="btn btn-primary btn-xs" data-bind="click: nextPage,css: {disabled: noNext}">Next page</button>
+                                </div>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -16,15 +20,18 @@
                                     <thead>
                                     <tr>
                                         <th>Service Name</th>
-                                        <th>Response</th>
+                                        <th>Created</th>
                                         <th>Response Code</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                     </thead>
-                                    <tbody data-bind="foreach: serviceName">
+                                    <tbody data-bind="foreach: responses">
                                     <tr>
+                                        <td data-bind="text: serviceName"></td>
                                         <td data-bind="text: createdFormatted"></td>
-                                        <td data-bind="text: response"></td>
                                         <td data-bind="text: responsecode"></td>
+                                        <td><button class="btn btn-primary btn-xs" data-bind="click: viewResponse">View Response</button></td>
                                     </tr>
 
                                     </tbody>
