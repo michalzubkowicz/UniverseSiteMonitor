@@ -16,7 +16,7 @@ import java.util.List;
 public class Check {
 
     public static void now() throws Exception{
-        Logger.debug("Running checks");
+        Logger.debug("Running checks: "+new Date());
         final List<Service> services = Service.getActiveServices();
 
         //TODO: Add threading

@@ -20,6 +20,10 @@
         },
         showPasswordModal: function() {
             PasswordModal.show().then(function(response) {
+                if(response.length<8) {
+                    app.showMessage("Password have to be longer than 8 chars", "Error", ["Close"], true, { style:  { color: "red", "font-size": "16px" } });
+                    return false;
+                }
                 showLoading();
                 $.ajax({
                     url: "/admin/changepassword",

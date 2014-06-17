@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.BasicDBObject;
 import org.mongojack.JacksonDBCollection;
 import play.Logger;
@@ -71,8 +72,12 @@ public class Response extends AbstractModel implements AbstractModelInterface {
         Logger.error("Remove called. Should not happend");
     }
 
+
+    @JsonIgnore
+    private static int pagelimit=100;
+
     public static List<Response> getPaginatedResponses(int skip) {
-        return Response.collection.find().skip(skip).limit(10).sort(new BasicDBObject("created DESC", -1)).toArray();
+        return Response.collection.find().sort(new BasicDBObject("created",-1)).skip(skip).limit(pagelimit).toArray();
     }
 
 }

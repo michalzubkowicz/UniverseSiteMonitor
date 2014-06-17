@@ -2,6 +2,7 @@
 define(['knockout','backend','models/Response', 'durandal/app'], function (ko, backend,Response,app) {
     return {
         self:this,
+        pageLimit: 100,
         responses: ko.observableArray([]),
         currentSkip: ko.observable(1),
         noNext: ko.observable(true),
@@ -32,13 +33,16 @@ define(['knockout','backend','models/Response', 'durandal/app'], function (ko, b
             return "";
         },
         nextPage: function() {
-            this.currentSkip(this.currentSkip()+10);
+            this.currentSkip(this.currentSkip()+this.pageLimit);
         },
         prevPage: function() {
-            var cs = this.currentSkip()-10;
+            var cs = this.currentSkip()-this.pageLimit;
             if(cs<0) cs=0;
             this.currentSkip(cs);
-
+        },
+        refresh: function() {
+            this.currentSkip(0);
+            this.currentSkip.valueHasMutated();
         }
     };
 });
