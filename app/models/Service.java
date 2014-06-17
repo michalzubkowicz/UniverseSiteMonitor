@@ -112,6 +112,16 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         this.interval = interval;
     }
 
+    private Boolean active=true;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public void update() {
         collection.updateById(this.id,this);
         try {

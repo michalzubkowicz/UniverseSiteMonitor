@@ -1756,3 +1756,7 @@ footer .copy{
 body {
     padding-top:0;
 }
+
+.disabled {
+    opacity: 0.7;
+}
