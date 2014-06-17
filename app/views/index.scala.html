@@ -1,7 +1,87 @@
-@(message: String)
+@()
 
-@main("Welcome to Play") {
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Universe Site Monitor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="robots" content="noindex,nofollow">
+        <link href="@routes.Assets.at("admin/lib/template/style/bootstrap.css")" rel="stylesheet">
+        <link rel="stylesheet" href="@routes.Assets.at("admin/lib/template/style/font-awesome.css")">
+        <link href="@routes.Assets.at("admin/lib/template/style/style.css")" rel="stylesheet">
+        <link rel="stylesheet" href="@routes.Assets.at("admin/durandal/css/durandal.css")" />
+        <link rel="shortcut icon" href="@routes.Assets.at("favicon.png")">
+        <script type="text/javascript" src="@routes.Assets.at("admin/lib/knockout/knockout-3.1.0.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("admin/lib/jquery/jquery-1.11.1.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("index.js")"></script>
+    </head>
+    <body>
+        <body>
+            <div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+                <div class="conjtainer">
+                    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                        <ul class="nav navbar-nav pull-left">
+                            <li><a href="/"><i class="icon-home"></i> Universe Site Monitor</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/admin">Admin Login</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
-    @play20.welcome(message, style = "Java")
+            <div style="margin-top:48px;" class="page-host">
+                <section>
+                    <div class="content">
+                        <div class="matter">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="widget">
+                                            <div class="widget-head">
+                                                <div class="pull-left">Monitored Services
+                                                    <h6 style="display:inline; margin-left:30px;">List is automatically refreshed every minute.
+                                                        Next refresh in <span data-bind="text: nextRefresh"></span> seconds</h6>
 
-}
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="widget-content" style="display: block;">
+
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody data-bind="foreach: services">
+                                                        <tr  data-bind="css: { iserror: notok}">
+                                                            <td data-bind="text: name"></td>
+                                                            <td>
+                                                                <p data-bind="if: ok">
+                                                                    <span class="glyphicon glyphicon-ok"></span> OK
+                                                                </p>
+                                                                <p data-bind="if: notok">
+                                                                    <span class="glyphicon glyphicon-remove"></span> ERROR
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </body>
+    </body>
+</html>

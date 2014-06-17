@@ -1,15 +1,20 @@
 package controllers;
 
 import models.Check;
+import models.Service;
+import models.ServiceView;
 import play.Logger;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 
+import java.util.List;
+
 public class Application extends Controller {
 
     public static Result index() {
-        return ok(index.render("Your new application is ready."));
+        return ok(index.render());
     }
 
     public static Result check() {
@@ -21,4 +26,11 @@ public class Application extends Controller {
         }
         return ok("");
     }
+
+    public static Result services() {
+        List<ServiceView> o = Service.getPublicServices();
+        return ok(Json.toJson(o));
+    }
+
+
 }

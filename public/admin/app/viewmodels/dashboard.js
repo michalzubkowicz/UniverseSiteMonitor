@@ -3,6 +3,7 @@ define(['knockout','backend','models/Service', 'durandal/app'], function (ko, ba
     return {
         services: ko.observableArray([]),
         nextRefresh: ko.observable(60),
+        interval: null,
         decrementRefresh: function() {
             var self = this;
             self.nextRefresh(self.nextRefresh()-1);
@@ -35,11 +36,15 @@ define(['knockout','backend','models/Service', 'durandal/app'], function (ko, ba
 
             self.reloadServices(false);
             self.decrementRefresh();
-            setInterval(function() {
+            self.interval=setInterval(function() {
                 self.decrementRefresh();
             },1000);
 
             return "";
+        },
+        deactivate: function() {
+            var self=this;
+            clearInterval(self.interval);
         }
 
     };

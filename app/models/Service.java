@@ -14,6 +14,7 @@ import java.util.List;
 public class Service extends AbstractModel implements AbstractModelInterface {
 
     public static JacksonDBCollection<Service, String> collection = MongoDB.getCollection("services", Service.class, String.class);
+    public static JacksonDBCollection<ServiceView, String> publiccollection = MongoDB.getCollection("services", ServiceView.class, String.class);
 
     private String name;
     public String getName() {
@@ -162,6 +163,10 @@ public class Service extends AbstractModel implements AbstractModelInterface {
 
     public static List<Service> getActiveServices() {
         return Service.collection.find(DBQuery.is("active",true)).toArray();
+    }
+
+    public static List<ServiceView> getPublicServices() {
+        return Service.publiccollection.find(DBQuery.is("active",true).is("guestaccess",true)).toArray();
     }
 
 }

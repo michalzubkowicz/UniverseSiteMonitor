@@ -4,8 +4,9 @@
 
 # Home page
 #GET           /                       controllers.Application.index()
-GET           /                            controllers.Admin.index()
-GET           /check                            controllers.Application.check()
+GET           /                            controllers.Application.index()
+GET           /check                       controllers.Application.check()
+GET           /services                    controllers.Application.services()
 
 GET           /assets/*file                controllers.Assets.at(path="/public", file)
 GET           /admin                       controllers.Admin.index()
