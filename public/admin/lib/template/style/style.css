@@ -1760,3 +1760,14 @@ body {
 .disabled {
     opacity: 0.7;
 }
+
+.isok {
+
+}
+
+
+
+.iserror {
+    background: rgba(255, 0, 0, 0.20) !important;
+}
+

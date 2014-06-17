@@ -3,7 +3,7 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
         var self=this;
         AbstractModel.apply(self,[id]);
         self.crudBaseURL="/admin/service/";
-        self.serializableFields=["_id","name","address","guestaccess","active"];
+        self.serializableFields=["_id","name","address","guestaccess","active","interval","expectedtext"];
         self.name = ko.observable("");
         self.address = ko.observable("");
         self.guestaccess = ko.observable("");
@@ -15,6 +15,11 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
         self.notified = ko.observable(true);
         self.active=ko.observable(true);
         self.ok=ko.observable(true);
+
+
+        self.notok = ko.computed(function() {
+            return !self.ok();
+        });
 
         self.disabled=ko.computed(function() {
             return !self.active();

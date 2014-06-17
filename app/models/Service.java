@@ -2,11 +2,13 @@ package models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mongojack.DBQuery;
 import org.mongojack.JacksonDBCollection;
 import play.Logger;
 import play.modules.mongojack.MongoDB;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class Service extends AbstractModel implements AbstractModelInterface {
@@ -112,7 +114,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         this.interval = interval;
     }
 
-    private Boolean active=true;
+    private Boolean active;
 
     public Boolean getActive() {
         return active;
@@ -149,7 +151,6 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     }
 
     public static Service createFromJson(JsonNode j) throws Exception {
-        Logger.debug("jest");
         ObjectMapper mapper = new ObjectMapper();
         if(j.hasNonNull("_id")) {
             Service g = collection.findOneById(j.get("_id").asText());
@@ -157,6 +158,10 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         } else {
             return mapper.readValue(j.toString(), Service.class);
         }
+    }
+
+    public static List<Service> getActiveServices() {
+        return Service.collection.find(DBQuery.is("active",true)).toArray();
     }
 
 }

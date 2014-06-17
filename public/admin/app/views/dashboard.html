@@ -15,22 +15,31 @@
 
                             <div class="widget-content" style="display: block;">
 
-                                <table class="table table-striped table-bordered table-hover">
+                                <table class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Address</th>
                                         <th>Last Response Code</th>
+                                        <th>Expected text</th>
                                         <th>Status</th>
                                         <th style="width:80px;">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody data-bind="foreach: services">
-                                    <tr  data-bind="css: { disabled: disabled}">
+                                    <tr  data-bind="css: { disabled: disabled, isok: ok, iserror: !ok}">
                                         <td data-bind="text: name"></td>
                                         <td data-bind="text: address"></td>
                                         <td data-bind="text: lastresponsecode"></td>
-                                        <td data-bind="text: ok"></td>
+                                        <td data-bind="text: expectedtext"></td>
+                                        <td>
+                                            <p data-bind="if: ok">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </p>
+                                            <p data-bind="if: notok">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </p>
+                                        </td>
                                         <td>
                                             <button class="btn btn-xs btn-primary" data-bind="click: Edit"><i class="icon-pencil"></i> </button>
                                             <button class="btn btn-xs btn-danger" data-bind="click: Remove"><i class="icon-remove"></i> </button>
