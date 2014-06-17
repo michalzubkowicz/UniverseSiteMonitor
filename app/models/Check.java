@@ -11,7 +11,9 @@ import play.libs.ws.WSRequestHolder;
 import play.libs.ws.WSResponse;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Check {
 
@@ -20,12 +22,12 @@ public class Check {
         final List<Service> services = Service.getActiveServices();
 
         //TODO: Add threading
-
+        final Map<String,Long> times=new HashMap<>();
 
         for(final Service service : services) {
             WSRequestHolder holder = WS.url(service.getAddress());
-            holder.setTimeout(1000);
-
+            times.put(service.getId(),new Date().getTime());
+            holder.setTimeout(5000);
             F.Promise<String> jsonPromise = holder.get().map(
                     new F.Function<WSResponse, String>() {
                         public String apply(WSResponse response) {
@@ -78,9 +80,11 @@ public class Check {
                                 service.save();
 
                                 Response r = new Response();
+                                r.setResponsetime(new Date().getTime()-times.get(service.getId()));
                                 r.setService(service);
                                 r.setResponse(response.getBody());
                                 r.setResponsecode(String.valueOf(response.getStatus()));
+
                                 r.save();
                             } catch(Exception wse) {
                                 Logger.error("Error when parsing response from "+service.getName()+": "+wse.getMessage(),wse);

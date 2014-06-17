@@ -55,6 +55,16 @@ public class Response extends AbstractModel implements AbstractModelInterface {
         this.responsecode = responsecode;
     }
 
+    private Long responsetime;
+
+    public Long getResponsetime() {
+        return responsetime;
+    }
+
+    public void setResponsetime(Long responsetime) {
+        this.responsetime = responsetime;
+    }
+
     public void save() {
         if(this.id==null) {
             this.id = collection.insert(this).getSavedId();

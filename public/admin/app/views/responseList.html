@@ -26,6 +26,7 @@
                                         <th>Service Name</th>
                                         <th>Created</th>
                                         <th>Response Code</th>
+                                        <th>Response Time (milis)</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -35,9 +36,9 @@
                                         <td data-bind="text: serviceName"></td>
                                         <td data-bind="text: createdFormatted"></td>
                                         <td data-bind="text: responsecode"></td>
+                                        <td data-bind="text: responsetime"></td>
                                         <td><button class="btn btn-primary btn-xs" data-bind="click: viewResponse">View Response</button></td>
                                     </tr>
-
                                     </tbody>
                                 </table>
                             </div>

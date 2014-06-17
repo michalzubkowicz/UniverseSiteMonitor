@@ -8,6 +8,7 @@ define(['AbstractModel','knockout','durandal/app'], function(AbstractModel,ko,ap
         self.created = ko.observable("");
         self.response = ko.observable("");
         self.responsecode = ko.observable("");
+        self.responsetime = ko.observable("");
 
         self.serviceName = ko.computed(function() {
            return self.service().name;
