@@ -1,0 +1,152 @@
+package models;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mongojack.JacksonDBCollection;
+import play.Logger;
+import play.modules.mongojack.MongoDB;
+
+import java.util.Date;
+
+
+public class Service extends AbstractModel implements AbstractModelInterface {
+
+    public static JacksonDBCollection<Service, String> collection = MongoDB.getCollection("services", Service.class, String.class);
+
+    private String name;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    private Date lastcheck;
+
+    public Date getLastcheck() {
+        return lastcheck;
+    }
+
+    public void setLastcheck(Date lastcheck) {
+        this.lastcheck = lastcheck;
+    }
+
+    private String lastresponse;
+
+    public String getLastresponse() {
+        return lastresponse;
+    }
+
+    public void setLastresponse(String lastresponse) {
+        this.lastresponse = lastresponse;
+    }
+
+    private String lastresponsecode;
+
+    public String getLastresponsecode() {
+        return lastresponsecode;
+    }
+
+    public void setLastresponsecode(String lastresponsecode) {
+        this.lastresponsecode = lastresponsecode;
+    }
+
+    private Boolean notified;
+
+    public Boolean getNotified() {
+        return notified;
+    }
+
+    public void setNotified(Boolean notified) {
+        this.notified = notified;
+    }
+
+    private Boolean ok;
+
+    public Boolean getOk() {
+        return ok;
+    }
+
+    public void setOk(Boolean ok) {
+        this.ok = ok;
+    }
+
+
+    private Boolean guestaccess;
+
+    public Boolean getGuestaccess() {
+        return guestaccess;
+    }
+
+    public void setGuestaccess(Boolean guestaccess) {
+        this.guestaccess = guestaccess;
+    }
+
+    private String expectedtext;
+
+    public String getExpectedtext() {
+        return expectedtext;
+    }
+
+    public void setExpectedtext(String expectedtext) {
+        this.expectedtext = expectedtext;
+    }
+
+    private Integer interval=1;
+
+    public Integer getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Integer interval) {
+        this.interval = interval;
+    }
+
+    public void update() {
+        collection.updateById(this.id,this);
+        try {
+            L.INSTANCE.reloadLabels();
+        } catch(Exception e) {
+            Logger.error(e.getMessage());
+        }
+    }
+
+    public void save() {
+        if(this.id==null) {
+            this.id = collection.insert(this).getSavedId();
+        } else {
+            this.update();
+        }
+    }
+
+    public void remove() {
+        collection.removeById(this.id);
+    }
+
+
+    public static void removeById(String id) {
+        collection.removeById(id);
+    }
+
+    public static Service createFromJson(JsonNode j) throws Exception {
+        Logger.debug("jest");
+        ObjectMapper mapper = new ObjectMapper();
+        if(j.hasNonNull("_id")) {
+            Service g = collection.findOneById(j.get("_id").asText());
+            return mapper.readerForUpdating(g).readValue(j.toString());
+        } else {
+            return mapper.readValue(j.toString(), Service.class);
+        }
+    }
+
+}

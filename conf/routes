@@ -3,7 +3,26 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+#GET           /                       controllers.Application.index()
+GET           /                            controllers.Admin.index()
 
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET           /assets/*file                controllers.Assets.at(path="/public", file)
+GET           /admin                       controllers.Admin.index()
+POST          /admin/login                 controllers.Authentication.authenticate()
+POST          /admin/changepassword        controllers.Admin.changepassword()
+GET           /admin/login                 controllers.Authentication.login()
+GET           /admin/logout                controllers.Authentication.logout()
+GET           /logout                      controllers.Authentication.logout()
+
+GET           /admin/label/                controllers.Admin.indexLabel()
+GET           /admin/label/:id             controllers.Admin.getLabel(id: String)
+PUT           /admin/label/                controllers.Admin.putLabel()
+DELETE        /admin/label/:id             controllers.Admin.deleteLabel(id: String)
+
+GET           /admin/service/              controllers.Admin.indexService()
+GET           /admin/service/:id           controllers.Admin.getService(id: String)
+PUT           /admin/service/              controllers.Admin.putService()
+DELETE        /admin/service/:id           controllers.Admin.deleteService(id: String)
+
+GET           /admin/response/              controllers.Admin.indexResponse()
+

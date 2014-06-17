@@ -1,0 +1,33 @@
+﻿    <div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+        <div class="conjtainer">
+            <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav pull-left">
+                    <li><a href="/admin"><i class="icon-home"></i> Universe Site Monitor</a></li>
+                </ul>
+                <ul class="nav navbar-nav" data-bind="foreach: router.navigationModel">
+                    <li data-bind="css: { active: isActive }">
+                        <a data-bind="attr: { href: hash }, text: title"></a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="loader" data-bind="css: { active: router.isNavigating }">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown pull-right">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="icon-user"></i> Admin <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-bind="click: showPasswordModal"><i class="icon-cogs"></i> Change Password</a></li>
+                            <li><a href="/logout"><i class="icon-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div style="margin-top:48px;" class="page-host" data-bind="router: { transition:'entrance' }"></div>
