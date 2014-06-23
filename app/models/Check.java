@@ -1,9 +1,6 @@
 package models;
 
 
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.SimpleEmail;
 import play.Logger;
 import play.libs.F;
 import play.libs.ws.WS;
@@ -26,8 +23,9 @@ public class Check {
 
         for(final Service service : services) {
             WSRequestHolder holder = WS.url(service.getAddress());
-            times.put(service.getId(),new Date().getTime());
+            times.put(service.getId(), new Date().getTime());
             holder.setTimeout(5000);
+
             F.Promise<String> jsonPromise = holder.get().map(
                     new F.Function<WSResponse, String>() {
                         public String apply(WSResponse response) {
@@ -44,29 +42,6 @@ public class Check {
 
                                 if (response.getStatus() != 200 || !expectedFound) {
                                     service.setOk(false);
-                                    if(!service.getNotified()) {
-                                        service.setNotified(true);
-
-                                        try {
-                                            Email email = new SimpleEmail();
-                                            email.setHostName(play.Play.application().configuration().getString("email.host"));
-                                            email.setSmtpPort(play.Play.application().configuration().getInt("email.port"));
-                                            email.setAuthenticator(new DefaultAuthenticator(play.Play.application().configuration().getString("email.login"), play.Play.application().configuration().getString("email.pass")));
-                                            if (play.Play.application().configuration().getInt("email.port") != 25)
-                                                email.setSSLOnConnect(true);
-                                            email.setFrom(play.Play.application().configuration().getString("email.from"));
-                                            if (response.getStatus() != 200) {
-                                                email.setSubject("Website " + service.getName() + " is unavailable!");
-                                            } else {
-                                                email.setSubject("Website " + service.getName() + " has wrong content!");
-                                            }
-                                            email.setMsg("Please visit Universe Site Monitor for more details");
-                                            email.addTo(play.Play.application().configuration().getString("email.to"));
-                                            email.send();
-                                        } catch (Exception me) {
-                                            Logger.error("Error when sending notification email " + me.getMessage(), me);
-                                        }
-                                    }
                                     Logger.debug("NOTOK: " + response.getStatus() + " " + expectedFound);
                                 } else {
                                     service.setOk(true);
@@ -93,6 +68,18 @@ public class Check {
                         }
                     }
             );
+            jsonPromise.recover(new F.Function<Throwable, String>() {
+                @Override
+                public String apply(Throwable throwable) throws Throwable {
+                   service.setOk(false);
+                   service.setLastresponsecode("0");
+                   service.setLastresponse("");
+                   service.save();
+                   Logger.debug("Error:"+throwable.getCause().toString());
+                   return "error";
+                }
+            });
+
         }
     }
 

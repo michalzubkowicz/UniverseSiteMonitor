@@ -44,7 +44,7 @@ public class Global extends GlobalSettings {
         }
 
         Akka.system().scheduler().schedule(
-                Duration.create(1, TimeUnit.MINUTES),Duration.create(1,TimeUnit.MINUTES),
+                Duration.create(10, TimeUnit.SECONDS),Duration.create(10,TimeUnit.SECONDS),
                 new Runnable() {
                     public void run() {
                         try {

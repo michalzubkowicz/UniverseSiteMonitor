@@ -1,3 +1,5 @@
+var DEFAULT_INTERVAL=10;
+
 function Service(name,ok) {
     var self=this;
     self.name=name;
@@ -8,7 +10,7 @@ function Service(name,ok) {
 function Monitor() {
     var self=this;
     self.services=ko.observableArray([]);
-    self.nextRefresh = ko.observable(60);
+    self.nextRefresh = ko.observable(DEFAULT_INTERVAL);
     self.reloadServices = function() {
         $.ajax({
             url: "/services",
@@ -29,7 +31,7 @@ function Monitor() {
         self.nextRefresh(self.nextRefresh()-1);
         if(self.nextRefresh()<=0) {
             self.reloadServices();
-            self.nextRefresh(60);
+            self.nextRefresh(DEFAULT_INTERVAL);
         }
     };
 

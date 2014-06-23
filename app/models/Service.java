@@ -2,6 +2,9 @@ package models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.Email;
+import org.apache.commons.mail.SimpleEmail;
 import org.mongojack.DBQuery;
 import org.mongojack.JacksonDBCollection;
 import play.Logger;
@@ -82,6 +85,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
 
     public void setOk(Boolean ok) {
         this.ok = ok;
+        if(ok.equals(false) && !this.ok.equals(ok)) this.sendNotification();
     }
 
 
@@ -167,6 +171,25 @@ public class Service extends AbstractModel implements AbstractModelInterface {
 
     public static List<ServiceView> getPublicServices() {
         return Service.publiccollection.find(DBQuery.is("active",true).is("guestaccess",true)).toArray();
+    }
+
+    public void sendNotification() {
+        try {
+            this.setNotified(true);
+            Email email = new SimpleEmail();
+            email.setHostName(play.Play.application().configuration().getString("email.host"));
+            email.setSmtpPort(play.Play.application().configuration().getInt("email.port"));
+            email.setAuthenticator(new DefaultAuthenticator(play.Play.application().configuration().getString("email.login"), play.Play.application().configuration().getString("email.pass")));
+            if (play.Play.application().configuration().getInt("email.port") != 25)
+                email.setSSLOnConnect(true);
+            email.setFrom(play.Play.application().configuration().getString("email.from"));
+            email.setSubject("Website " + this.getName() + " is unavailable!");
+            email.setMsg("Please visit Universe Site Monitor for more details");
+            email.addTo(play.Play.application().configuration().getString("email.to"));
+            email.send();
+        } catch (Exception me) {
+            Logger.error("Error when sending notification email " + me.getMessage(), me);
+        }
     }
 
 }

@@ -1,15 +1,16 @@
 
 define(['knockout','backend','models/Service', 'durandal/app'], function (ko, backend,Service,app) {
+    var DEFAULT_INTERVAL=10;
     return {
         services: ko.observableArray([]),
-        nextRefresh: ko.observable(60),
+        nextRefresh: ko.observable(DEFAULT_INTERVAL),
         interval: null,
         decrementRefresh: function() {
             var self = this;
             self.nextRefresh(self.nextRefresh()-1);
             if(self.nextRefresh()<=0) {
                 self.reloadServices(true);
-                self.nextRefresh(60);
+                self.nextRefresh(DEFAULT_INTERVAL);
             }
         },
         reloadServices: function(background) {
