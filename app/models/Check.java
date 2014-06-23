@@ -45,7 +45,6 @@ public class Check {
                                     Logger.debug("NOTOK: " + response.getStatus() + " " + expectedFound);
                                 } else {
                                     service.setOk(true);
-                                    service.setNotified(false);
                                     Logger.debug("OK: " + response.getStatus() + " " + expectedFound);
                                 }
 

@@ -85,7 +85,8 @@ public class Service extends AbstractModel implements AbstractModelInterface {
 
     public void setOk(Boolean ok) {
         this.ok = ok;
-        if(ok.equals(false) && !this.ok.equals(ok)) this.sendNotification();
+        if(ok.equals(Boolean.TRUE)) this.setNotified(false);
+        if(ok.equals(Boolean.FALSE) && this.notified.equals(Boolean.FALSE)) this.sendNotification();
     }
 
 
@@ -174,8 +175,9 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     }
 
     public void sendNotification() {
+        this.setNotified(true);
         try {
-            this.setNotified(true);
+
             Email email = new SimpleEmail();
             email.setHostName(play.Play.application().configuration().getString("email.host"));
             email.setSmtpPort(play.Play.application().configuration().getInt("email.port"));
