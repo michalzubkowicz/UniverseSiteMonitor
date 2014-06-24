@@ -14,9 +14,13 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
         self.lastresponsecode = ko.observable("");
         self.notified = ko.observable(true);
         self.active=ko.observable(true);
+        self.seen=ko.observable("");
+        self.seen_formatted='';
+        self.seen.subscribe(function(n) {
+            if(n!=null) self.seen_formatted=new Date(n).toISOString().slice(0, 19);
+        });
+
         self.ok=ko.observable(true);
-
-
         self.notok = ko.computed(function() {
             return !self.ok();
         });

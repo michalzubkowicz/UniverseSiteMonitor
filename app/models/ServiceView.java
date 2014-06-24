@@ -2,6 +2,8 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Date;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServiceView {
     private String name;
@@ -32,5 +34,15 @@ public class ServiceView {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Date seen;
+
+    public Date getSeen() {
+        return seen;
+    }
+
+    public void setSeen(Date seen) {
+        this.seen = seen;
     }
 }

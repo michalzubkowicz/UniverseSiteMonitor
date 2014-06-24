@@ -1,10 +1,11 @@
 var DEFAULT_INTERVAL=10;
 
-function Service(name,ok) {
+function Service(name,ok,seen) {
     var self=this;
     self.name=name;
     self.ok=ok;
     self.notok=!ok;
+    self.seen_formatted=(seen!=null ? self.seen_formatted=new Date(seen).toISOString().slice(0, 19) : "")
 }
 
 function Monitor() {
@@ -18,7 +19,7 @@ function Monitor() {
             context: document.body,
             success: function (r) {
                 self.services($.map(r,function(s) {
-                   return new Service(s.name, s.ok);
+                   return new Service(s.name, s.ok, s.seen);
                 }));
             }
         });

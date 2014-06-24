@@ -13,7 +13,6 @@ import play.modules.mongojack.MongoDB;
 import java.util.Date;
 import java.util.List;
 
-
 public class Service extends AbstractModel implements AbstractModelInterface {
 
     public static JacksonDBCollection<Service, String> collection = MongoDB.getCollection("services", Service.class, String.class);
@@ -86,9 +85,21 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     public void setOk(Boolean ok) {
         this.ok = ok;
         if(ok.equals(Boolean.TRUE)) this.setNotified(false);
-        if(ok.equals(Boolean.FALSE) && this.notified.equals(Boolean.FALSE)) this.sendNotification();
+        if(ok.equals(Boolean.FALSE) && this.notified.equals(Boolean.FALSE)) {
+            this.sendNotification();
+            this.setSeen(new Date());
+        }
     }
 
+    private Date seen;
+
+    public Date getSeen() {
+        return seen;
+    }
+
+    public void setSeen(Date seen) {
+        this.seen = seen;
+    }
 
     private Boolean guestaccess;
 

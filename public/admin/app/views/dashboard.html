@@ -24,9 +24,11 @@
                                     <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Guest access</th>
                                         <th>Address</th>
                                         <th>Last Response Code</th>
                                         <th>Expected text</th>
+                                        <th>Occured</th>
                                         <th>Status</th>
                                         <th style="width:80px;">Action</th>
                                     </tr>
@@ -34,9 +36,11 @@
                                     <tbody data-bind="foreach: services">
                                     <tr  data-bind="css: { disabled: disabled, iserror: notok}">
                                         <td data-bind="text: name"></td>
+                                        <td data-bind="text: guestaccess"></td>
                                         <td data-bind="text: address"></td>
                                         <td data-bind="text: lastresponsecode"></td>
                                         <td data-bind="text: expectedtext"></td>
+                                        <td data-bind="text: seen_formatted"></td>
                                         <td>
                                             <p data-bind="if: ok">
                                                 <span class="glyphicon glyphicon-ok"></span>

@@ -56,12 +56,14 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Name</th>
+                                                            <th>Error Seen</th>
                                                             <th>Status</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody data-bind="foreach: services">
                                                         <tr  data-bind="css: { iserror: notok}">
                                                             <td data-bind="text: name"></td>
+                                                            <td data-bind="text: seen_formatted"></td>
                                                             <td>
                                                                 <p data-bind="if: ok">
                                                                     <span class="glyphicon glyphicon-ok"></span> OK
@@ -70,6 +72,7 @@
                                                                     <span class="glyphicon glyphicon-remove"></span> ERROR
                                                                 </p>
                                                             </td>
+
                                                         </tr>
                                                     </tbody>
                                                 </table>
