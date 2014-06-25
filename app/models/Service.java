@@ -2,6 +2,7 @@ package models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
@@ -182,7 +183,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     }
 
     public static List<ServiceView> getPublicServices() {
-        return Service.publiccollection.find(DBQuery.is("active",true).is("guestaccess",true)).toArray();
+        return Service.publiccollection.find(DBQuery.is("active",true).is("guestaccess",true)).sort(new BasicDBObject("name", 1)).toArray();
     }
 
     public void sendNotification() {

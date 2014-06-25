@@ -25,7 +25,7 @@ public class Admin extends Controller {
 
 
     public static Result indexLabel() {
-        List<Label> o = Label.collection.find().sort(new BasicDBObject("name ASC",-1)).toArray();
+        List<Label> o = Label.collection.find().sort(new BasicDBObject("name",1)).toArray();
 
         return ok(Json.toJson(o));
     }
@@ -66,7 +66,7 @@ public class Admin extends Controller {
     }
 
     public static Result indexService() {
-        List<Service> o = Service.collection.find().sort(new BasicDBObject("name ASC",-1)).toArray();
+        List<Service> o = Service.collection.find().sort(new BasicDBObject("name",1)).toArray();
         return ok(Json.toJson(o));
     }
 
