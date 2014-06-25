@@ -52,7 +52,7 @@
 
                                             <div class="widget-content" style="display: block;">
 
-                                                <table class="table table-bordered table-condensed">
+                                                <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
                                                             <th>Name</th>
@@ -65,12 +65,12 @@
                                                             <td data-bind="text: name"></td>
                                                             <td data-bind="text: seen_formatted"></td>
                                                             <td>
-                                                                <p data-bind="if: ok">
+                                                                <span data-bind="if: ok">
                                                                     <span class="glyphicon glyphicon-ok"></span> OK
-                                                                </p>
-                                                                <p data-bind="if: notok">
+                                                                </span>
+                                                                <span data-bind="if: notok">
                                                                     <span class="glyphicon glyphicon-remove"></span> ERROR
-                                                                </p>
+                                                                </span>
                                                             </td>
 
                                                         </tr>

@@ -42,12 +42,12 @@
                                         <td data-bind="text: expectedtext"></td>
                                         <td data-bind="text: seen_formatted"></td>
                                         <td>
-                                            <p data-bind="if: ok">
+                                            <span data-bind="if: ok">
                                                 <span class="glyphicon glyphicon-ok"></span>
-                                            </p>
-                                            <p data-bind="if: notok">
+                                            </span>
+                                            <span data-bind="if: notok">
                                                 <span class="glyphicon glyphicon-remove"></span>
-                                            </p>
+                                            </span>
                                         </td>
                                         <td>
                                             <button class="btn btn-xs btn-primary" data-bind="click: Edit"><i class="icon-pencil"></i> </button>
