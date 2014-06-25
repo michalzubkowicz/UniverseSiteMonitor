@@ -17,7 +17,7 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
         self.seen=ko.observable("");
         self.seen_formatted='';
         self.seen.subscribe(function(n) {
-            if(n!=null) self.seen_formatted=new Date(n).toISOString().slice(0, 19);
+            if(n!=null) self.seen_formatted=new Date(n).toLocaleString();
         });
 
         self.ok=ko.observable(true);

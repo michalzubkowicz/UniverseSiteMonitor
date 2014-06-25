@@ -5,7 +5,7 @@ function Service(name,ok,seen) {
     self.name=name;
     self.ok=ok;
     self.notok=!ok;
-    self.seen_formatted=(seen!=null ? self.seen_formatted=new Date(seen).toISOString().slice(0, 19) : "")
+    self.seen_formatted=(seen!=null ? self.seen_formatted=new Date(seen).toLocaleString() : "")
 }
 
 function Monitor() {
