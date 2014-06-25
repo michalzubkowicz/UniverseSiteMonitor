@@ -24,7 +24,7 @@ public class Check {
         for(final Service service : services) {
             WSRequestHolder holder = WS.url(service.getAddress());
             times.put(service.getId(), new Date().getTime());
-            holder.setTimeout(5000);
+            holder.setTimeout(10000);
 
             F.Promise<String> jsonPromise = holder.get().map(
                     new F.Function<WSResponse, String>() {
