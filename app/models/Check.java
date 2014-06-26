@@ -2,6 +2,7 @@ package models;
 
 
 import play.Logger;
+import play.Play;
 import play.libs.F;
 import play.libs.ws.WS;
 import play.libs.ws.WSRequestHolder;
@@ -24,7 +25,12 @@ public class Check {
         for(final Service service : services) {
             WSRequestHolder holder = WS.url(service.getAddress());
             times.put(service.getId(), new Date().getTime());
-            holder.setTimeout(10000);
+            try {
+                holder.setTimeout(Play.application().configuration().getInt("check.timeout") * 1000);
+            } catch(Exception e) {
+                Logger.error("Wrong timeout value, using default: 1s");
+                holder.setTimeout(1000);
+            }
 
             F.Promise<String> jsonPromise = holder.get().map(
                     new F.Function<WSResponse, String>() {

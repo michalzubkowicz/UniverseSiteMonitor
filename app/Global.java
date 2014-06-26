@@ -6,6 +6,7 @@ import models.User;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
+import play.Play;
 import play.libs.Akka;
 import scala.concurrent.duration.Duration;
 
@@ -43,8 +44,13 @@ public class Global extends GlobalSettings {
             Logger.info("Response collection is not capped, if you want to be capped run manually: db.runCommand({\"convertToCapped\": \"responses\", size: 1000});");
         }
 
+        Integer interval = Play.application().configuration().getInt("check.interval");
+        if(interval==null) {
+            interval=10;
+        }
+
         Akka.system().scheduler().schedule(
-                Duration.create(10, TimeUnit.SECONDS),Duration.create(10,TimeUnit.SECONDS),
+                Duration.create(interval, TimeUnit.SECONDS),Duration.create(interval,TimeUnit.SECONDS),
                 new Runnable() {
                     public void run() {
                         try {
