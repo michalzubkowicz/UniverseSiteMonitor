@@ -3,9 +3,6 @@ package models;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.SimpleEmail;
 import org.mongojack.DBQuery;
 import org.mongojack.JacksonDBCollection;
 import play.Logger;
@@ -86,10 +83,16 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     public void setOk(Boolean ok) {
         this.ok = ok;
         if(ok.equals(Boolean.TRUE)) this.setNotified(false);
-        if(ok.equals(Boolean.FALSE) && this.notified.equals(Boolean.FALSE)) {
-            this.sendNotification();
+    }
+
+    public boolean shouldSendNotification() {
+        boolean yes = (ok.equals(Boolean.FALSE) && this.notified.equals(Boolean.FALSE));
+        if(!yes) {
             this.setSeen(new Date());
+            this.setNotified(true);
         }
+        return yes;
+
     }
 
     private Date seen;
@@ -186,24 +189,6 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         return Service.publiccollection.find(DBQuery.is("active",true).is("guestaccess",true)).sort(new BasicDBObject("name", 1)).toArray();
     }
 
-    public void sendNotification() {
-        this.setNotified(true);
-        try {
 
-            Email email = new SimpleEmail();
-            email.setHostName(play.Play.application().configuration().getString("email.host"));
-            email.setSmtpPort(play.Play.application().configuration().getInt("email.port"));
-            email.setAuthenticator(new DefaultAuthenticator(play.Play.application().configuration().getString("email.login"), play.Play.application().configuration().getString("email.pass")));
-            if (play.Play.application().configuration().getInt("email.port") != 25)
-                email.setSSLOnConnect(true);
-            email.setFrom(play.Play.application().configuration().getString("email.from"));
-            email.setSubject("Website " + this.getName() + " is unavailable!");
-            email.setMsg("Please visit Universe Site Monitor for more details");
-            email.addTo(play.Play.application().configuration().getString("email.to"));
-            email.send();
-        } catch (Exception me) {
-            Logger.error("Error when sending notification email " + me.getMessage(), me);
-        }
-    }
 
 }
