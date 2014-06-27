@@ -67,7 +67,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         this.lastresponsecode = lastresponsecode;
     }
 
-    private Boolean notified;
+    private Boolean notified=true;
 
     public Boolean getNotified() {
         return notified;
@@ -77,7 +77,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         this.notified = notified;
     }
 
-    private Boolean ok;
+    private Boolean ok=false;
 
     public Boolean getOk() {
         return ok;
