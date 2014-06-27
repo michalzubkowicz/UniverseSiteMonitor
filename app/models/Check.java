@@ -80,6 +80,12 @@ public class Check {
                    service.setLastresponsecode("0");
                    service.setLastresponse("");
                    service.save();
+
+                    Response r = new Response();
+                    r.setResponsetime((long) 0);
+                    r.setService(service);
+                    r.setResponse("");
+                    r.setResponsecode("0");
                    Logger.debug("Error:"+throwable.getCause().toString());
                    return "error";
                 }
