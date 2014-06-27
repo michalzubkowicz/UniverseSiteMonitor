@@ -75,7 +75,7 @@ public class Check {
                                 Logger.error("Error when parsing response from "+service.getName()+": "+wse.getMessage(),wse);
                             }
                             doneservices.add(service.getName());
-                            if(doneservices.size()==services.size()) Check.sendNotification(notifyservices);
+                            if(doneservices.size()==services.size() && notifyservices.size()>0) Check.sendNotification(notifyservices);
                             return response.getBody();
                         }
                     }
@@ -90,7 +90,7 @@ public class Check {
                     doneservices.add(service.getName());
 
                     if(service.shouldSendNotification()) notifyservices.add(service.getName());
-                    if(doneservices.size()==services.size()) Check.sendNotification(notifyservices);
+                    if(doneservices.size()==services.size() && notifyservices.size()>0) Check.sendNotification(notifyservices);
 
                     Response r = new Response();
                     r.setResponsetime((long) 0);
@@ -106,6 +106,7 @@ public class Check {
     }
 
     public static void sendNotification(List<String> body) {
+
         StringBuilder sb = new StringBuilder("Sites:\n");
         for(String s : body) {
             sb.append(s);
