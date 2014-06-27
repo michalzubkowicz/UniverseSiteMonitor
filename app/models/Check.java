@@ -126,7 +126,7 @@ public class Check {
             if (play.Play.application().configuration().getInt("email.port") != 25)
                 email.setSSLOnConnect(true);
             email.setFrom(play.Play.application().configuration().getString("email.from"));
-            email.setSubject("Website or more is unavailable!");
+            email.setSubject("Sites unavailable!");
             email.setMsg(body+"\nPlease visit Universe Site Monitor for more details");
             email.addTo(play.Play.application().configuration().getString("email.to"));
             email.send();
