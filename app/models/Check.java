@@ -49,26 +49,26 @@ public class Check {
                                     expectedFound = false;
                                 }
 
+                                Service serviceForSave = Service.collection.findOneById(service.getId());
                                 if (response.getStatus() != 200 || !expectedFound) {
-                                    service.setOk(false);
-                                    if(service.shouldSendNotification()) notifyservices.add(service.getName());
+                                    serviceForSave.setOk(false);
+                                    if(service.shouldSendNotification()) notifyservices.add(serviceForSave.getName());
                                     Logger.debug("NOTOK: " + response.getStatus() + " " + expectedFound);
                                 } else {
-                                    service.setOk(true);
+                                    serviceForSave.setOk(true);
                                     Logger.debug("OK: " + response.getStatus() + " " + expectedFound);
                                 }
 
-                                service.setLastcheck(new Date());
-                                service.setLastresponse(response.getBody());
-                                service.setLastresponsecode(String.valueOf(response.getStatus()));
-                                service.save();
+                                serviceForSave.setLastcheck(new Date());
+                                serviceForSave.setLastresponse(response.getBody());
+                                serviceForSave.setLastresponsecode(String.valueOf(response.getStatus()));
+                                serviceForSave.save();
 
                                 Response r = new Response();
                                 r.setResponsetime(new Date().getTime()-times.get(service.getId()));
-                                r.setService(service);
+                                r.setService(serviceForSave);
                                 r.setResponse(response.getBody());
                                 r.setResponsecode(String.valueOf(response.getStatus()));
-
                                 r.save();
 
                             } catch(Exception wse) {
@@ -83,20 +83,22 @@ public class Check {
             jsonPromise.recover(new F.Function<Throwable, String>() {
                 @Override
                 public String apply(Throwable throwable) throws Throwable {
-                    service.setOk(false);
-                    service.setLastresponsecode("0");
-                    service.setLastresponse("");
-                    service.save();
+                    Service serviceForSave = Service.collection.findOneById(service.getId());
+                    serviceForSave.setOk(false);
+                    serviceForSave.setLastresponsecode("0");
+                    serviceForSave.setLastresponse("");
+                    serviceForSave.save();
                     doneservices.add(service.getName());
 
-                    if(service.shouldSendNotification()) notifyservices.add(service.getName());
+                    if(serviceForSave.shouldSendNotification()) notifyservices.add(serviceForSave.getName());
                     if(doneservices.size()==services.size() && notifyservices.size()>0) Check.sendNotification(notifyservices);
 
                     Response r = new Response();
                     r.setResponsetime((long) 0);
-                    r.setService(service);
+                    r.setService(serviceForSave);
                     r.setResponse("");
                     r.setResponsecode("0");
+                    r.save();
                     Logger.debug("Error:"+throwable.getCause().toString());
                     return "error";
                 }
