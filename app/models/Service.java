@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
 import org.mongojack.DBQuery;
+import org.mongojack.DBUpdate;
 import org.mongojack.JacksonDBCollection;
 import play.Logger;
 import play.modules.mongojack.MongoDB;
@@ -85,13 +86,15 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         if(ok.equals(Boolean.TRUE)) this.setNotified(false);
     }
 
-    public boolean shouldSendNotification() {
-        boolean yes = (ok.equals(Boolean.FALSE) && this.notified.equals(Boolean.FALSE));
-        if(!yes) {
-            this.setSeen(new Date());
-            this.setNotified(true);
-        }
-        return yes;
+    public static boolean shouldSendNotification(String id) {
+        return !collection.findAndModify(
+                DBQuery
+                        .is("active",true)
+                        .is("ok",false)
+                        .is("notified",false)
+                        .is("_id",id),
+                DBUpdate.set("notified",true)
+        ).getNotified();
 
     }
 
@@ -189,6 +192,30 @@ public class Service extends AbstractModel implements AbstractModelInterface {
         return Service.publiccollection.find(DBQuery.is("active",true).is("guestaccess",true)).sort(new BasicDBObject("name", 1)).toArray();
     }
 
+    public static void saveError(String id, String lastresponse, String lastresponsecode) {
+        collection.update(
+                DBQuery
+                        .is("active",true)
+                        .is("ok",true)
+                        .is("_id",id),
+                DBUpdate.set("ok",false)
+                        .set("lastresponse",lastresponse)
+                        .set("lastresponsecode",lastresponsecode)
+                        .set("seen",new Date())
+        );
+    }
+
+    public static void saveOK(String id) {
+        collection.update(
+                DBQuery
+                        .is("active",true)
+                        .is("ok",false)
+                        .is("_id",id),
+                DBUpdate.set("ok",true)
+                        .set("lastresponse","")
+                        .set("lastresponsecode","200")
+        );
+    }
 
 
 }

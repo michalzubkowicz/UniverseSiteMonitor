@@ -49,24 +49,20 @@ public class Check {
                                     expectedFound = false;
                                 }
 
-                                Service serviceForSave = Service.collection.findOneById(service.getId());
+
                                 if (response.getStatus() != 200 || !expectedFound) {
-                                    serviceForSave.setOk(false);
-                                    if(service.shouldSendNotification()) notifyservices.add(serviceForSave.getName());
+                                    Service.saveError(service.getId(),response.getBody(),String.valueOf(response.getStatus()));
+                                    Service.shouldSendNotification(service.getId());
                                     Logger.debug("NOTOK: " + response.getStatus() + " " + expectedFound);
                                 } else {
-                                    serviceForSave.setOk(true);
+                                    Service.saveOK(service.getId());
                                     Logger.debug("OK: " + response.getStatus() + " " + expectedFound);
                                 }
 
-                                serviceForSave.setLastcheck(new Date());
-                                serviceForSave.setLastresponse(response.getBody());
-                                serviceForSave.setLastresponsecode(String.valueOf(response.getStatus()));
-                                serviceForSave.save();
 
                                 Response r = new Response();
                                 r.setResponsetime(new Date().getTime()-times.get(service.getId()));
-                                r.setService(serviceForSave);
+                                r.setService(service);
                                 r.setResponse(response.getBody());
                                 r.setResponsecode(String.valueOf(response.getStatus()));
                                 r.save();
@@ -83,19 +79,15 @@ public class Check {
             jsonPromise.recover(new F.Function<Throwable, String>() {
                 @Override
                 public String apply(Throwable throwable) throws Throwable {
-                    Service serviceForSave = Service.collection.findOneById(service.getId());
-                    serviceForSave.setOk(false);
-                    serviceForSave.setLastresponsecode("0");
-                    serviceForSave.setLastresponse("");
-                    serviceForSave.save();
+                    Service.saveError(service.getId(),"","0");
                     doneservices.add(service.getName());
 
-                    if(serviceForSave.shouldSendNotification()) notifyservices.add(serviceForSave.getName());
+                    if(Service.shouldSendNotification(service.getId())) notifyservices.add(service.getName());
                     if(doneservices.size()==services.size() && notifyservices.size()>0) Check.sendNotification(notifyservices);
 
                     Response r = new Response();
                     r.setResponsetime((long) 0);
-                    r.setService(serviceForSave);
+                    r.setService(service);
                     r.setResponse("");
                     r.setResponsecode("0");
                     r.save();

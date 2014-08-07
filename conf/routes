@@ -27,4 +27,4 @@ PUT           /admin/service/              controllers.Admin.putService()
 DELETE        /admin/service/:id           controllers.Admin.deleteService(id: String)
 
 GET           /admin/response/:skip              controllers.Admin.indexResponse(skip: Int)
-
+GET           /test                         controllers.Application.test()

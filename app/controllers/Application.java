@@ -32,5 +32,9 @@ public class Application extends Controller {
         return ok(Json.toJson(o));
     }
 
+    public static Result test() {
+        return ok("");
+    }
+
 
 }
