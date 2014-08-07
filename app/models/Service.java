@@ -202,6 +202,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
                         .set("lastresponse",lastresponse)
                         .set("lastresponsecode",lastresponsecode)
                         .set("seen",new Date())
+                        .set("notified",false)
         );
     }
 
