@@ -1,4 +1,5 @@
 import com.mongodb.BasicDBObject;
+import models.Check;
 import models.Label;
 import models.Response;
 import models.User;
@@ -53,7 +54,7 @@ public class Global extends GlobalSettings {
                 new Runnable() {
                     public void run() {
                         try {
-                           //TODO: Odchashowac Check.now();
+                           Check.now();
                         } catch(Exception e) {
                             Logger.error(e.getMessage());
                         }
