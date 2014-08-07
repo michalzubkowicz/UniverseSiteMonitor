@@ -214,6 +214,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
                 DBUpdate.set("ok",true)
                         .set("lastresponse","")
                         .set("lastresponsecode","200")
+                        .set("notified",false)
         );
     }
 
