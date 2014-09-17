@@ -92,6 +92,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
                         .is("active",true)
                         .is("ok",false)
                         .is("notified",false)
+                        .greaterThanEquals("retries", 1)
                         .is("_id",id),
                 DBUpdate.set("notified",true)
         ).getNotified();
@@ -136,6 +137,16 @@ public class Service extends AbstractModel implements AbstractModelInterface {
 
     public void setInterval(Integer interval) {
         this.interval = interval;
+    }
+
+    private Integer retries=0;
+
+    public Integer getRetries() {
+        return retries;
+    }
+
+    public void setRetries(Integer retries) {
+        this.retries = retries;
     }
 
     private Boolean active;
@@ -203,6 +214,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
                         .set("lastresponsecode",lastresponsecode)
                         .set("seen",new Date())
                         .set("notified",false)
+                        .inc("retries")
         );
     }
 
@@ -213,6 +225,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
                         .is("ok",false)
                         .is("_id",id),
                 DBUpdate.set("ok",true)
+                        .set("retries", 0)
                         .set("lastresponse","")
                         .set("lastresponsecode","200")
                         .set("notified",false)
