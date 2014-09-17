@@ -37,8 +37,10 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
             router.navigate("");
         };
 
-        self.afterSave = function() {
-            router.navigate("");
+        self.afterSave = function(r,e) {
+            if(!e)
+                router.navigate("");
+            else alert(r);
         };
     }
 });

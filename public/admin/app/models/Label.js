@@ -23,8 +23,10 @@ define(['AbstractModel','knockout','plugins/router'], function(AbstractModel,ko,
             //list.labels.remove(self);
         };*/
 
-        self.afterSave = function() {
-            router.navigate("#labels");
+        self.afterSave = function(r,e) {
+            if(!e)
+                router.navigate("#labels");
+            else alert(r);
         };
     }
 });
