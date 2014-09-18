@@ -92,7 +92,7 @@ public class Service extends AbstractModel implements AbstractModelInterface {
                         .is("active",true)
                         .is("ok",false)
                         .is("notified",false)
-                        .greaterThanEquals("retries", 1)
+                        .greaterThan("retries", 3)
                         .is("_id",id),
                 DBUpdate.set("notified",true)
         ).getNotified();
