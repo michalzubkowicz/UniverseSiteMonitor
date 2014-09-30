@@ -87,15 +87,19 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     }
 
     public static boolean shouldSendNotification(String id) {
-        return !collection.findAndModify(
-                DBQuery
-                        .is("active",true)
-                        .is("ok",false)
-                        .is("notified",false)
-                        .greaterThan("retries", 3)
-                        .is("_id",id),
-                DBUpdate.set("notified",true)
-        ).getNotified();
+        try {
+            return !collection.findAndModify(
+                    DBQuery
+                            .is("active", true)
+                            .is("ok", false)
+                            .is("notified", false)
+                            .greaterThan("retries", 3)
+                            .is("_id", id),
+                    DBUpdate.set("notified", true)
+            ).getNotified();
+        } catch(Exception e) {
+            return false;
+        }
 
     }
 
