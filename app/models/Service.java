@@ -208,16 +208,31 @@ public class Service extends AbstractModel implements AbstractModelInterface {
     }
 
     public static void saveError(String id, String lastresponse, String lastresponsecode) {
+        //first update
         collection.update(
                 DBQuery
                         .is("active",true)
-                        .is("ok",true)
-                        .is("_id",id),
+                        .is("ok", true)
+                        .is("retries",0)
+                        .is("_id", id),
                 DBUpdate.set("ok",false)
                         .set("lastresponse",lastresponse)
                         .set("lastresponsecode",lastresponsecode)
                         .set("seen",new Date())
                         .set("notified",false)
+                        .inc("retries")
+        );
+
+        //next updates
+        collection.update(
+                DBQuery
+                        .is("active", true)
+                        .is("_id", id)
+                        .is("ok", false),
+                DBUpdate.set("ok", false)
+                        .set("lastresponse", lastresponse)
+                        .set("lastresponsecode", lastresponsecode)
+                        .set("seen", new Date())
                         .inc("retries")
         );
     }
