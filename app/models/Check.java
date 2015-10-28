@@ -79,8 +79,8 @@ public class Check {
                                     Logger.error("Error when parsing response from " + service.getName() + ": " + wse.getMessage(), wse);
                                 }
                                 doneservices.add(service.getName());
-                                //if (doneservices.size() == services.size() && notifyservices.size() > 0)
-                                if(notifyservices.size()>0)
+                                if (doneservices.size() == services.size()-1 && notifyservices.size() > 0)
+                                    //if(notifyservices.size()>0)
                                     Check.sendNotification(notifyservices);
                                 return response.getBody();
                             }
