@@ -93,7 +93,7 @@ public class Check {
                         doneservices.add(service.getName());
 
                         if (Service.shouldSendNotification(service.getId())) notifyservices.add(service.getName());
-                        if (doneservices.size() == services.size() && notifyservices.size() > 0)
+                        if (doneservices.size() == services.size()-1 && notifyservices.size() > 0)
                             Check.sendNotification(notifyservices);
 
                         Response r = new Response();
