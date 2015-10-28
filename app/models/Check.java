@@ -69,11 +69,18 @@ public class Check {
                                     r.setResponsecode(String.valueOf(response.getStatus()));
                                     r.save();
 
-                                } catch (Exception wse) {
+                                } catch (NullPointerException wsne) {
+                                    Service.saveError(service.getId(), "", "0");
+                                    Service.shouldSendNotification(service.getId());
+                                }
+                                catch (Exception wse) {
+                                    Service.saveError(service.getId(), response.getBody(), String.valueOf(response.getStatus()));
+                                    Service.shouldSendNotification(service.getId());
                                     Logger.error("Error when parsing response from " + service.getName() + ": " + wse.getMessage(), wse);
                                 }
                                 doneservices.add(service.getName());
-                                if (doneservices.size() == services.size() && notifyservices.size() > 0)
+                                //if (doneservices.size() == services.size() && notifyservices.size() > 0)
+                                if(notifyservices.size()>0)
                                     Check.sendNotification(notifyservices);
                                 return response.getBody();
                             }

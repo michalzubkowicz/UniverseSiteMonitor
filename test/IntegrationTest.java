@@ -37,15 +37,6 @@ public class IntegrationTest {
                 s.save();
                 String id = s.getId();
                 try {
-                    /*Logger.info("Check 1");
-                    Check.now();
-                    Thread.sleep(10000);
-                    Logger.info("Check 2");
-                    Check.now();
-                    Thread.sleep(10000);
-                    Logger.info("Check 3");
-                    Check.now();
-                    Thread.sleep(10000);*/
                     Service.saveError(id,"error","200");
                     Service.saveError(id,"error","200");
                     Service.saveError(id,"error","200");
